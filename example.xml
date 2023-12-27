@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<tiles>
+    <tile name="tile1">
+        <info>info11</info>
+        <info>info12</info>
+        <info>info13</info>
+    </tile>
+    <tile name="tile2">
+        <info>info21</info>
+        <info>info22</info>
+        <info>info23</info>
+    </tile>
+    <tile name="tile3">
+        <info>info31</info>
+        <info>info32</info>
+        <info>info33</info>
+    </tile>
+    <tile name="tile4">
+        <info>info41</info>
+        <info>info42</info>
+        <info>info43</info>
+    </tile>
+    <tile name="tile5">
+        <info>info51</info>
+        <info>info52</info>
+        <info>info53</info>
+    </tile>
+    <tile name="tile6">
+        <info>info61</info>
+        <info>info62</info>
+        <info>info63</info>
+    </tile>
+    <tile name="tile7">
+        <info>info71</info>
+        <info>info72</info>
+        <info>info73</info>
+    </tile>
+    <tile name="tile8">
+        <info>info81</info>
+        <info>info82</info>
+        <info>info83</info>
+    </tile>
+    <tile name="tile9">
+        <info>info91</info>
+        <info>info92</info>
+        <info>info93</info>
+    </tile>
+</tiles>
