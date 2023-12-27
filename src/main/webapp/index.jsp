@@ -2,12 +2,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Parser</title>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
+<h2><%= "Choose parser type!" %></h2>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
+    <form action="hello-servlet">
+        <input type="hidden" name="currentPage" value="1">
+        <select name="parserType">
+            <option value="1" selected>DOM</option>
+            <option value="2">SAX</option>
+            <option value="3">StAX</option>
+        </select>
+        <button type="submit">Parse</button>
+    </form>
 </body>
 </html>

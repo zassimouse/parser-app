@@ -1,6 +1,6 @@
-package org.example.service;
+package org.example.parserapp.service;
 
-import org.example.model.Tile;
+import org.example.parserapp.model.Tile;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -10,33 +10,48 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TileServiceStAX implements ITileService {
 
     public int numberOfTiles;
 
+    public int startTile;
+    public int endTile;
+
     @Override
-    public void getTiles(int currentPage, int numOfRecords) throws XMLStreamException {
+    public List<Tile> getTiles(int currentPage, int numOfRecords) {
+
+        startTile = (currentPage - 1) * numOfRecords + 1;
+        endTile = (currentPage - 1) * numOfRecords + numOfRecords;
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        List<Tile> tiles;
         try {
-            InputStream input = new FileInputStream("example.xml");
+            InputStream input = new FileInputStream("/Users/denisharitonenko/Downloads/parser-app/example.xml");
             XMLStreamReader reader = inputFactory.createXMLStreamReader(input);
-            ArrayList<Tile> tiles = process(reader);
+            tiles = process(reader);
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | XMLStreamException e) {
             throw new RuntimeException(e);
         }
 
-
-
-
+        return tiles;
     }
 
-    private ArrayList<Tile> process(XMLStreamReader reader) throws XMLStreamException {
+    public Boolean isValid() {
+        System.out.println("start tile " + startTile);
+        System.out.println("end tile " + endTile);
+        System.out.println("numb " + numberOfTiles + 1);
+
+        return (numberOfTiles + 1 >= startTile) && (numberOfTiles + 1 <= endTile);
+    }
+
+    private List<Tile> process(XMLStreamReader reader) throws XMLStreamException {
         numberOfTiles = 0;
-        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        List<Tile> tiles = new ArrayList<>();
+
         Tile tile = null;
         TileTagName elementName = null;
         while (reader.hasNext()) {
@@ -45,10 +60,11 @@ public class TileServiceStAX implements ITileService {
                 case XMLStreamConstants.START_ELEMENT: {
                     elementName = TileTagName.getElementTagName(reader.getLocalName());
                     if (Objects.requireNonNull(elementName) == TileTagName.TILE) {
-                        tile = new Tile();
-                        tile.tileName = reader.getAttributeValue(null, "name");
-                        System.out.println(tile.tileName);
-                        numberOfTiles++;
+                        if (isValid()) {
+                            tile = new Tile();
+                            tile.tileName = reader.getAttributeValue(null, "name");
+                            System.out.println(tile.tileName);
+                        }
                     }
                 }
                 break;
@@ -58,16 +74,24 @@ public class TileServiceStAX implements ITileService {
                         break;
                     }
                     if (Objects.requireNonNull(elementName) == TileTagName.INFO) {
-                        tile.tileInfo.add(text);
-                        System.out.println(tile.tileInfo);
+                        if (tile != null) {
+                            if (isValid()) {
+                                tile.tileInfo.add(text);
+                                System.out.println(tile.tileInfo);
+                            }
+                        }
                     }
                 }
                 break;
                 case XMLStreamConstants.END_ELEMENT: {
                     elementName = TileTagName.getElementTagName(reader.getLocalName());
                     if (Objects.requireNonNull(elementName) == TileTagName.TILE) {
-                        tiles.add(tile);
+                        if (isValid()) {
+                            tiles.add(tile);
+                        }
+                        numberOfTiles++;
                     }
+
                 }
             }
         }

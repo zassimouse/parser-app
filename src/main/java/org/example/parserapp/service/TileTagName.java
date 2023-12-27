@@ -1,14 +1,16 @@
-package org.example.service;
+package org.example.parserapp.service;
 
 public enum TileTagName {
     TILE, INFO, TILES;
 
     public static TileTagName getElementTagName(String element) {
-        return switch (element) {
-            case "tile" -> TILE;
-            case "info" -> INFO;
-            case "tiles" -> TILES;
-            default -> TILES;
-        };
+        switch (element) {
+            case "tile":
+                return TILE;
+            case "info":
+                return INFO;
+            default:
+                return TILES;
+        }
     }
 }
